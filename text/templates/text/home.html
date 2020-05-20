@@ -1,0 +1,76 @@
+{% extends "text/base.html" %}
+{% block content %}
+
+    <h2>Document Upload</h2>
+    <head>
+        <script>
+        function validateForm() {
+         var x = document.forms["myForm"]["documents"].value;
+             if (x == "") {
+             alert("Please upload a document");
+            return false;
+         }}
+        </script>
+    </head>
+    <body>
+       <form name="myForm" method ="post" enctype="multipart/form-data">
+           {% csrf_token %}
+           <input type="file" name="documents" >
+           <input type="submit" class = "btn btn-outline-info" name="uploadFile" value="Upload File" onclick="return validateForm()">
+           <br/>
+           <br/>
+            {% if context%}
+            <p> Uploaded file:<a href ="{{ context }}"> {{ context }}</a></p>
+           {% endif %}
+            <br/>
+           <div class="container">
+             <label>Topics</label>
+             <select name="selectedTopic" class="item">
+                {% for topic in topics %}
+                <option value="{{ topic }}">{{topic}}</option>
+                {% endfor %}
+             </select>
+             <input type="submit" class = "btn btn-outline-info" name="submittedTopic" value="Select">
+           </div>
+           <br/>
+           <br/>
+           <input type="submit" class = "btn btn-outline-info" name="generateQuestion" value="Question">
+           <br/>
+           <br/>
+           <div class="container">
+                <label>Questions:</label>
+                {% if Questions %}
+                <select name="QuestionsList" class="item">
+                {% for quest in Questions%}
+                <option value="{{ quest }}">{{ quest }}</option>
+                {% endfor %}
+                </select>
+                {% endif %}
+                <input type="submit" class = "btn btn-outline-info" name="selectedQuestion" value="Select" >
+           </div>
+            <br/>
+            <br/>
+            <input type="submit" class = "btn btn-outline-info" name="generateAnswer" value="Answer">
+            <br/>
+           <br/>
+           <div class="content-section">
+                {% if Answer %}
+                {{ Answer }}
+                {% endif %}
+            <br/>
+            <br/>
+           </div>
+           <input type="submit" class = "btn btn-outline-info" name="SpeechAnswer" value="Narrate Answer">
+           <input type="submit" class = "btn btn-outline-info" name="generateSummary" value="Summarize">
+            <br/>
+           <br/>
+           <div class="content-section">
+                {%if Summarized_Answer%}
+                {{ Summarized_Answer }}
+                {% endif %}
+           </div>
+       </form>
+    </body>
+        <!--<button onclick="location.href='summary/'">Summary</button> -->
+
+{% endblock content %}
